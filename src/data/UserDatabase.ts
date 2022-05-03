@@ -10,7 +10,7 @@ export class UserDatabase extends BaseDatabase {
       await this.connection(this.TABLE_NAME).insert({user});
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error("kkkkk");
+        throw new Error(error.message);
       } else {
         throw new Error("Erro no banco de dados.");
       }
