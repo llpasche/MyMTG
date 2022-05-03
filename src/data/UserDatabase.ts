@@ -7,10 +7,10 @@ export class UserDatabase extends BaseDatabase {
 
   public signup = async (user: User): Promise<void> => {
     try {
-      await this.connection(this.TABLE_NAME).insert(user);
+      await this.connection(this.TABLE_NAME).insert({user});
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(error.message);
+        throw new Error("kkkkk");
       } else {
         throw new Error("Erro no banco de dados.");
       }
@@ -19,7 +19,9 @@ export class UserDatabase extends BaseDatabase {
 
   public getUserByEmail = async (email: string) => {
     try {
-      const result: getUserByEmailResponse = await this.connection(this.TABLE_NAME).where(email);
+      const result: getUserByEmailResponse = await this.connection(
+        this.TABLE_NAME
+      ).where({ email });
 
       return result[0];
     } catch (error) {
