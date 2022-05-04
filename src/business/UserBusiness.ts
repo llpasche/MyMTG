@@ -51,19 +51,18 @@ export class UserBusiness {
     if (!foundUser) {
       throw new Error("Usuário não registrado.");
     }
-
     //Autorização do usuário
-    const passwordIsCorrect: boolean = await this.hashManager.compare(
+    const passwordIsCorrect = await this.hashManager.compare(
       password,
-      foundUser.password
+      foundUser.user_password
     );
     if (!passwordIsCorrect) {
       throw new Error("Senha incorreta.");
     }
 
     const token: string = this.authenticator.generate({
-      id: foundUser.id,
-      hashedPassword: foundUser.password,
+      id: foundUser.user_id,
+      hashedPassword: foundUser.user_password,
     });
 
     return token;
