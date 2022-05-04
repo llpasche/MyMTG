@@ -1,0 +1,5 @@
+export enum CARD_LANGUAGE {
+  ENGLISH = "INGLÊS",
+  JAPANESE = "JAPONÊS",
+  PORTUGUESE = "PORTUGUÊS",
+}

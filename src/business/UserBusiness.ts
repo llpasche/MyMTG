@@ -15,6 +15,8 @@ export class UserBusiness {
   ) {}
   public signup = async (input: signupInputDTO): Promise<string> => {
     const { name, email, password } = input;
+    const id = this.idGenerator.generateId();
+    const hashedPassword = await this.hashManager.hash(password);
 
     //Validação de preenchimento de dados
     if (!email || !name || !password) {
@@ -27,8 +29,6 @@ export class UserBusiness {
       throw new Error("Email já cadastrado.");
     }
 
-    const id = this.idGenerator.generateId();
-    const hashedPassword = await this.hashManager.hash(password);
     const user = new User(id, name, email, hashedPassword);
 
     await this.userDataBase.signup(user);
