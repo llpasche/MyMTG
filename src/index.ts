@@ -30,7 +30,8 @@ const cardListBusiness = new CardListBusiness(
   new CardListDatabase(),
   new CardDatabase(),
   new ListDatabase(),
-  new IdGenerator()
+  new IdGenerator(),
+  new Authenticator()
 );
 
 const authenticator = new Authenticator();
@@ -51,6 +52,7 @@ app.post("/card", cardController.createCard);
 app.get("/list", listController.getLists);
 app.get("/card", cardController.getCardsByList);
 
-//Os endpoints abaixo funcionam, eles só permitem atualizações nas cartas de listas criadas pelo usuário especificado. No entanto, eles enviam a mensagem de sucesso mesmo com o banco não atualizando. Não soube como fazer retornar um erro ao tentar modificar carta de outro usuário
+//Os endpoints abaixo funcionam, eles só permitem atualizações nas cartas de listas criadas pelo usuário especificado. No entanto, eles enviam a mensagem de sucesso mesmo com o banco não atualizando. Não soube como fazer retornar um erro ao tentar modificar carta/lista de outro usuário
 app.patch("/list", cardController.updateQuantity);
 app.patch("/list/price", cardController.updatePrice);
+app.delete("/card/delete", cardListController.removeFromList);

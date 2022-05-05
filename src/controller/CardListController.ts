@@ -36,9 +36,57 @@ export class CardListController {
           res.status(422).send(error.message);
           break;
         case "Card inexistente.":
-          res.status(403).send(error.message);
+          res.status(404).send(error.message);
           break;
         case "Lista inexistente.":
+          res.status(404).send(error.message);
+          break;
+        case "Erro no banco de dados":
+          res.status(500).send(error.message);
+          break;
+        default:
+          res.status(500).send("Erro do servidor.");
+      }
+    }
+  };
+
+  public removeFromList = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    try {
+      const { cardId, listId } = req.body;
+      const token = req.headers.authorization as string;
+
+      const input: cardListInputDTO = {
+        cardId,
+        listId,
+      };
+
+      await this.cardListBusiness.removeCard(input, token);
+
+      const listName = await this.listBusiness.retrieveListName(listId);
+      const cardName = await this.cardBusiness.retrieveCardName(cardId);
+
+      res
+        .status(200)
+        .send(`"${cardName}" removido de "${listName}" com sucesso!`);
+    } catch (error: any) {
+      console.log(error)
+      switch (error.message) {
+        case "Usuário não autorizado.":
+          res.status(403).send(error.message);
+          break;
+        case "Preencha todos os campos.":
+          res.status(422).send(error.message);
+          break;
+        case "Card inexistente.":
+          res.status(404).send(error.message);
+          break;
+        case "Lista inexistente.":
+          res.status(404).send(error.message);
+          break;
+        case "Este card não pertence a esta lista.":
           res.status(422).send(error.message);
           break;
         case "Erro no banco de dados":
