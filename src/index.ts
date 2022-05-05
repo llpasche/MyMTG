@@ -51,5 +51,6 @@ app.post("/card", cardController.createCard);
 app.get("/list", listController.getLists);
 app.get("/card", cardController.getCardsByList);
 
-//O endpoint abaixo funciona, ele só permite atualizações nas cartas de listas criadas pelo usuário. No entanto, ele envia a mensagem de sucesso mesmo com o banco não atualizando. Não soube como fazer essa validação.
+//Os endpoints abaixo funcionam, eles só permitem atualizações nas cartas de listas criadas pelo usuário especificado. No entanto, eles enviam a mensagem de sucesso mesmo com o banco não atualizando. Não soube como fazer retornar um erro ao tentar modificar carta de outro usuário
 app.patch("/list", cardController.updateQuantity);
+app.patch("/list/price", cardController.updatePrice);

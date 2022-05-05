@@ -4,7 +4,8 @@ import { Authenticator } from "../services/Authenticator";
 import { IdGenerator } from "../services/IdGenerator";
 import { authenticationData } from "../types/authenticationData";
 import { cardInputDTO } from "../types/DTO/cardInputDTO";
-import { updateCardInputDTO } from "../types/DTO/updateCardInputDTO";
+import { updateCardQuantityInputDTO } from "../types/DTO/updateCardInputDTO";
+import { updateCardPriceInputDTO } from "../types/DTO/updateCardPriceInputDTO";
 
 export class CardBusiness {
   constructor(
@@ -57,7 +58,7 @@ export class CardBusiness {
   };
 
   public updateQuantity = async (
-    input: updateCardInputDTO,
+    input: updateCardQuantityInputDTO,
     userToken: string
   ): Promise<void> => {
     if (!userToken) {
@@ -68,6 +69,25 @@ export class CardBusiness {
     await this.cardDatabase.updateCardQuantity(
       input.cardId,
       input.quantity,
+      userData
+    );
+  };
+
+  public updatePrice = async (
+    input: updateCardPriceInputDTO,
+    userToken: string
+  ): Promise<void> => {
+    if (!userToken) {
+      throw new Error("Usuário não autorizado.");
+    }
+    if(!input.price.includes("R$")){
+      throw new Error("Insira o valor na formatação correta (R$<valor aqui>).");      
+    }
+    const userData: authenticationData =
+      this.authenticator.getTokenData(userToken);
+    await this.cardDatabase.updateCardPrice(
+      input.cardId,
+      input.price,
       userData
     );
   };
