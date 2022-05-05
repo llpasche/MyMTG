@@ -1,9 +1,14 @@
 import { Request, Response } from "express";
 import { CardBusiness } from "../business/CardBusiness";
+import { Authenticator } from "../services/Authenticator";
 import { cardInputDTO } from "../types/DTO/cardInputDTO";
+import { updateCardInputDTO } from "../types/DTO/updateCardInputDTO";
 
 export class CardController {
-  constructor(private cardBusiness: CardBusiness) {}
+  constructor(
+    private cardBusiness: CardBusiness,
+    private authenticator: Authenticator
+  ) {}
   public createCard = async (req: Request, res: Response): Promise<void> => {
     try {
       const { name, edition, language, isFoil, price, quantity } = req.body;
@@ -22,6 +27,9 @@ export class CardController {
     } catch (error: any) {
       switch (error.message) {
         case "Preencha todos os campos.":
+          res.status(422).send(error.message);
+          break;
+        case "Este card já foi cadastrado.":
           res.status(422).send(error.message);
           break;
         case "Erro no banco de dados.":
@@ -47,6 +55,36 @@ export class CardController {
       switch (error.message) {
         case "Parâmetro de ordenação inválido.":
           res.status(422).send(error.message);
+          break;
+        case "Erro no banco de dados.":
+          res.status(500).send(error.message);
+          break;
+        default:
+          res.status(500).send("Erro do servidor.");
+      }
+    }
+  };
+
+  public updateQuantity = async (
+    req: Request,
+    res: Response
+  ): Promise<void> => {
+    try {
+      const cardId = req.query.card as string;
+      const {quantity} = req.body;
+      const token = req.headers.authorization as string;
+      const input: updateCardInputDTO = {
+        cardId,
+        quantity,
+      };
+      await this.cardBusiness.updateQuantity(input, token);
+
+      res.status(200).send(`Quantidade atualizada para ${quantity}!`)
+    } catch (error: any) {
+      console.log(error)
+      switch (error.message) {
+        case "Usuário não autorizado.":
+          res.status(403).send(error.message);
           break;
         case "Erro no banco de dados.":
           res.status(500).send(error.message);

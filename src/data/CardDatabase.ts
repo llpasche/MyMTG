@@ -1,4 +1,5 @@
 import { Card } from "../model/Card";
+import { authenticationData } from "../types/authenticationData";
 import { BaseDatabase } from "./BaseDatabase";
 
 export class CardDatabase extends BaseDatabase {
@@ -42,15 +43,18 @@ export class CardDatabase extends BaseDatabase {
     }
   };
 
-  public updateCardQuantity = async (card: any) => {
+  public updateCardQuantity = async (
+    card: string,
+    quantity: number,
+    userData: authenticationData
+  ) => {
     try {
-      const [previousQuantity] = await this.connection(this.TABLE_NAME)
-        .select("card_quantity")
-        .where("card_id", card.card_id);
-
-      await this.connection(this.TABLE_NAME)
-        .update("card_quantity", previousQuantity.card_quantity + 1)
-        .where("card_id", card.card_id);
+      await this.connection("Lists")
+        .where("creator_id", userData.id)
+        .join("Card_and_List", "Card_and_List.list_id", "Lists.list_id")
+        .join(this.TABLE_NAME, "Cards.card_id", "Card_and_List.card_id")
+        .update("Cards.card_quantity", quantity)
+        .where("Cards.card_id", card);
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);

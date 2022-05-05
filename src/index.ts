@@ -24,7 +24,7 @@ const userBusiness = new UserBusiness(
 
 const listBusiness = new ListBusiness(new ListDatabase(), new IdGenerator());
 
-const cardBusiness = new CardBusiness(new CardDatabase(), new IdGenerator());
+const cardBusiness = new CardBusiness(new CardDatabase(), new IdGenerator(), new Authenticator);
 
 const cardListBusiness = new CardListBusiness(
   new CardListDatabase(),
@@ -36,7 +36,7 @@ const cardListBusiness = new CardListBusiness(
 const authenticator = new Authenticator();
 const userController = new UserController(userBusiness);
 const listController = new ListController(listBusiness, authenticator);
-const cardController = new CardController(cardBusiness);
+const cardController = new CardController(cardBusiness, authenticator);
 const cardListController = new CardListController(
   cardListBusiness,
   listBusiness,
@@ -50,3 +50,6 @@ app.post("/list/add", cardListController.insertIntoList);
 app.post("/card", cardController.createCard);
 app.get("/list", listController.getLists);
 app.get("/card", cardController.getCardsByList);
+
+//O endpoint abaixo funciona, ele só permite atualizações nas cartas de listas criadas pelo usuário. No entanto, ele envia a mensagem de sucesso mesmo com o banco não atualizando. Não soube como fazer essa validação.
+app.patch("/list", cardController.updateQuantity);
