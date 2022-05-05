@@ -1,6 +1,6 @@
 import { ListDatabase } from "../data/ListDatabase";
 import { IdGenerator } from "../services/IdGenerator";
-import { listInputDTO } from "../types/listInputDTO";
+import { listInputDTO } from "../types/DTO/listInputDTO";
 import { List } from "../model/List";
 
 export class ListBusiness {
@@ -31,4 +31,10 @@ export class ListBusiness {
 
     await this.listDatabase.createList(list);
   };
+
+  public retrieveListName = async (id: string) => {
+    const result = await this.listDatabase.getListName(id);
+
+    return result
+  }
 }

@@ -1,5 +1,5 @@
-import { CARD_LANGUAGE } from "../types/CARD_LANGUAGE";
-import { IS_FOIL } from "../types/IS_FOIL";
+import { CARD_LANGUAGE } from "../types/ENUM/CARD_LANGUAGE";
+import { IS_FOIL } from "../types/ENUM/IS_FOIL";
 
 export class Card {
   constructor(

@@ -1,5 +1,5 @@
-import { CARD_LANGUAGE } from "./CARD_LANGUAGE";
-import { IS_FOIL } from "./IS_FOIL";
+import { CARD_LANGUAGE } from "../ENUM/CARD_LANGUAGE";
+import { IS_FOIL } from "../ENUM/IS_FOIL";
 
 export type cardInputDTO = {
   name: string;

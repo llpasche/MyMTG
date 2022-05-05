@@ -36,4 +36,34 @@ export class ListDatabase extends BaseDatabase {
       }
     }
   };
+
+  public getListById = async (id: string): Promise<List> => {
+    try {
+      const list = await this.connection(this.TABLE_NAME).where("list_id", id);
+
+      return list[0];
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Erro no banco de dados.");
+      }
+    }
+  };
+
+  public getListName = async (id: string) => {
+    try {
+      const [listName] = await this.connection(this.TABLE_NAME)
+        .select("list_name")
+        .where("list_id", id);
+
+      return listName.list_name;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Erro no banco de dados.");
+      }
+    }
+  };
 }

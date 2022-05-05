@@ -61,4 +61,34 @@ export class CardDatabase extends BaseDatabase {
       }
     }
   };
+
+  public getCardById = async (id: string): Promise<Card> => {
+    try {
+      const list = await this.connection(this.TABLE_NAME).where("card_id", id);
+
+      return list[0];
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Erro no banco de dados.");
+      }
+    }
+  };
+
+  public getCardName = async (id: string) => {
+    try {
+      const [cardName] = await this.connection(this.TABLE_NAME)
+        .select("card_name")
+        .where("card_id", id);
+
+      return cardName.card_name;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Erro no banco de dados.");
+      }
+    }
+  };
 }

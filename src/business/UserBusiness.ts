@@ -3,8 +3,8 @@ import { User } from "../model/User";
 import { Authenticator } from "../services/Authenticator";
 import { HashManager } from "../services/HashManager";
 import { IdGenerator } from "../services/IdGenerator";
-import { loginInputDTO } from "../types/loginInputDTO";
-import { signupInputDTO } from "../types/signupInputDTO";
+import { loginInputDTO } from "../types/DTO/loginInputDTO";
+import { signupInputDTO } from "../types/DTO/signupInputDTO";
 
 export class UserBusiness {
   constructor(

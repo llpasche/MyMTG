@@ -2,7 +2,7 @@ import { breadcrumbsClasses } from "@mui/material";
 import { Request, Response } from "express";
 import { ListBusiness } from "../business/ListBusiness";
 import { Authenticator } from "../services/Authenticator";
-import { listInputDTO } from "../types/listInputDTO";
+import { listInputDTO } from "../types/DTO/listInputDTO";
 
 export class ListController {
   constructor(

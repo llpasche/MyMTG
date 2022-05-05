@@ -1,7 +1,7 @@
 import { CardDatabase } from "../data/CardDatabase";
 import { Card } from "../model/Card";
 import { IdGenerator } from "../services/IdGenerator";
-import { cardInputDTO } from "../types/cardInputDTO";
+import { cardInputDTO } from "../types/DTO/cardInputDTO";
 
 export class CardBusiness {
   constructor(
@@ -36,4 +36,11 @@ export class CardBusiness {
       await this.cardDatabase.createCard(newCard);
     }
   };
+
+  
+  public retrieveCardName = async (id: string) => {
+    const result = await this.cardDatabase.getCardName(id);
+
+    return result
+  }
 }

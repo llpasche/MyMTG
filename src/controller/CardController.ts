@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { CardBusiness } from "../business/CardBusiness";
-import { cardInputDTO } from "../types/cardInputDTO";
+import { cardInputDTO } from "../types/DTO/cardInputDTO";
 
 export class CardController {
   constructor(private cardBusiness: CardBusiness) {}
