@@ -66,4 +66,25 @@ export class ListDatabase extends BaseDatabase {
       }
     }
   };
+
+  public getLists = async () => {
+    const lists = await this.connection(this.TABLE_NAME);
+    const listsArray = [];
+
+    for (let list of lists) {
+      const cards = await this.connection("Card_and_List")
+        .join("Cards", "Cards.card_id", "Card_and_List.card_id")
+        .where("list_id", list.list_id)
+        .select("Cards.card_id", "Cards.card_name");
+
+      list = {
+        ...list,
+        cards,
+      };
+
+      listsArray.push(list);
+    }
+
+    return listsArray;
+  };
 }

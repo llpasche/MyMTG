@@ -36,5 +36,11 @@ export class ListBusiness {
     const result = await this.listDatabase.getListName(id);
 
     return result
+  };
+
+  public getLists = async () => {
+    const result = await this.listDatabase.getLists();
+
+    return result
   }
 }

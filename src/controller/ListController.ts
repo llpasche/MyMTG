@@ -1,4 +1,3 @@
-import { breadcrumbsClasses } from "@mui/material";
 import { Request, Response } from "express";
 import { ListBusiness } from "../business/ListBusiness";
 import { Authenticator } from "../services/Authenticator";
@@ -25,7 +24,6 @@ export class ListController {
       await this.listBusiness.createList(input);
 
       res.status(201).send("Lista criada!");
-      res.end();
     } catch (error: any) {
       switch (error.message) {
         case "Preencha todos os campos.":
@@ -37,9 +35,22 @@ export class ListController {
         case "Uma lista já foi criada com este nome.":
           res.status(422).send(error.message);
           break;
+        case "Erro no banco de dados.":
+          res.status(500).send(error.message);
+          break;
         default:
           res.status(500).send("Erro do servidor.");
       }
+    }
+  };
+
+  public getLists = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const result = await this.listBusiness.getLists();
+
+      res.status(200).send(result);
+    } catch (error) {
+      res.status(500).send("Erro do servidor.");
     }
   };
 }

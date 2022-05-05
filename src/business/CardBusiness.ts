@@ -37,10 +37,15 @@ export class CardBusiness {
     }
   };
 
-  
   public retrieveCardName = async (id: string) => {
     const result = await this.cardDatabase.getCardName(id);
 
-    return result
-  }
+    return result;
+  };
+
+  public getCardsByList = async (id: string, orderParam: string) => {
+    const result = await this.cardDatabase.getCardsByList(id, orderParam);
+
+    return result;
+  };
 }

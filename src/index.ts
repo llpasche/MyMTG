@@ -1,8 +1,8 @@
+import { app } from "./controller/app";
 import { CardBusiness } from "./business/CardBusiness";
 import { CardListBusiness } from "./business/CardListBusiness";
 import { ListBusiness } from "./business/ListBusiness";
 import { UserBusiness } from "./business/UserBusiness";
-import { app } from "./controller/app";
 import { CardController } from "./controller/CardController";
 import { CardListController } from "./controller/CardListController";
 import { ListController } from "./controller/ListController";
@@ -44,7 +44,9 @@ const cardListController = new CardListController(
 );
 
 app.post("/signup", userController.signup);
-// app.post("/login", userController.login);
+app.post("/login", userController.login);
 app.post("/list", listController.createList);
 app.post("/list/add", cardListController.insertIntoList);
 app.post("/card", cardController.createCard);
+app.get("/list", listController.getLists);
+app.get("/card", cardController.getCardsByList);

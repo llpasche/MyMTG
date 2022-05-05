@@ -32,8 +32,6 @@ export class CardDatabase extends BaseDatabase {
         .andWhere("card_language", card.getLanguage())
         .andWhere("card_is_foil", card.getIsFoil())
         .andWhere("card_price", card.getPrice());
-      console.log(card);
-      console.log(result[0]);
       return result[0];
     } catch (error) {
       if (error instanceof Error) {
@@ -49,11 +47,11 @@ export class CardDatabase extends BaseDatabase {
       const [previousQuantity] = await this.connection(this.TABLE_NAME)
         .select("card_quantity")
         .where("card_id", card.card_id);
+
       await this.connection(this.TABLE_NAME)
         .update("card_quantity", previousQuantity.card_quantity + 1)
         .where("card_id", card.card_id);
     } catch (error) {
-      console.log(error);
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
@@ -83,6 +81,42 @@ export class CardDatabase extends BaseDatabase {
         .where("card_id", id);
 
       return cardName.card_name;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Erro no banco de dados.");
+      }
+    }
+  };
+
+  public getCardsByList = async (
+    listId: string,
+    orderParam: string
+  ): Promise<any> => {
+    try {
+      let result;
+      //Em "orderBy", o padrão é ascendente. Ascendente pra valores string é de A - Z, enquanto pra valores numéricos é do maior para o menor. A verificação a seguir garante que, ao selecionar uma ordenação ascendente, o primeiro valor numérico seja o mais baixo. Esta implementação pode ser facilmente removida e é apenas questão de preferência pessoal (faz mais sentido pra mim assim")
+      switch (orderParam) {
+        case "card_name":
+          result = await this.connection(this.TABLE_NAME)
+            .join("Card_and_List", "Card_and_List.card_id", "Cards.card_id")
+            .where("Card_and_List.list_id", listId)
+            .orderBy(orderParam);
+
+          return result;
+
+        case "card_price":
+          result = await this.connection(this.TABLE_NAME)
+            .join("Card_and_List", "Card_and_List.card_id", "Cards.card_id")
+            .where("Card_and_List.list_id", listId)
+            .orderBy(orderParam, "asc");
+
+          return result;
+
+        default:
+          throw new Error("Parâmetro de ordenação inválido.");
+      }
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
