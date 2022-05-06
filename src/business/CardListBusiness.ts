@@ -49,9 +49,8 @@ export class CardListBusiness {
     const { cardId, listId } = input;
     const userData: authenticationData = this.authenticator.getTokenData(token);
 
-    //Autorização do usuário
     if (!token) {
-      throw new Error("Usuário não autorizado.");
+      throw new Error("Token não enviado.");
     }
 
     //Validação de preenchimento de dados
@@ -77,7 +76,15 @@ export class CardListBusiness {
       listId
     );
     if (!isCardFromList) {
-      throw new Error("Este card não pertence a esta lista.");
+      throw new Error("Esta carta não pertence a esta lista.");
+    }
+
+    //Autorização do usuário
+    const foundCreator = await this.cardListDatabase.getCreatorByListId(
+      input.listId
+    );
+    if (foundCreator.creator_id !== userData.id) {
+      throw new Error("Usuário não autorizado.");
     }
 
     await this.cardListDatabase.removeCard(cardId, listId, userData);

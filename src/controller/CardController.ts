@@ -30,7 +30,7 @@ export class CardController {
         case "Preencha todos os campos.":
           res.status(422).send(error.message);
           break;
-        case "Este card já foi cadastrado.":
+        case "Esta carta já foi cadastrada.":
           res.status(422).send(error.message);
           break;
         case "Erro no banco de dados.":
@@ -72,17 +72,34 @@ export class CardController {
   ): Promise<void> => {
     try {
       const cardId = req.query.card as string;
-      const {quantity} = req.body;
+      const { quantity, listId } = req.body;
       const token = req.headers.authorization as string;
       const input: updateCardQuantityInputDTO = {
         cardId,
         quantity,
+        listId,
       };
+
       await this.cardBusiness.updateQuantity(input, token);
 
-      res.status(200).send(`Quantidade atualizada para ${quantity}!`)
+      res.status(200).send(`Quantidade atualizada para ${quantity}!`);
     } catch (error: any) {
       switch (error.message) {
+        case "Token não enviado.":
+          res.status(401).send(error.message);
+          break;
+        case "Preencha todos os campos.":
+          res.status(422).send(error.message);
+          break;
+        case "Carta inexistente.":
+          res.status(404).send(error.message);
+          break;
+        case "Lista inexistente.":
+          res.status(404).send(error.message);
+          break;
+        case "Esta carta não pertence a esta lista.":
+          res.status(422).send(error.message);
+          break;
         case "Usuário não autorizado.":
           res.status(403).send(error.message);
           break;
@@ -94,23 +111,37 @@ export class CardController {
       }
     }
   };
-  public updatePrice = async (
-    req: Request,
-    res: Response
-  ): Promise<void> => {
+
+  public updatePrice = async (req: Request, res: Response): Promise<void> => {
     try {
       const cardId = req.query.card as string;
-      const {price} = req.body;
+      const { price, listId } = req.body;
       const token = req.headers.authorization as string;
       const input: updateCardPriceInputDTO = {
         cardId,
         price,
+        listId,
       };
       await this.cardBusiness.updatePrice(input, token);
 
-      res.status(200).send(`Valor atualizado para ${price}!`)
+      res.status(200).send(`Valor atualizado para ${price}!`);
     } catch (error: any) {
       switch (error.message) {
+        case "Token não enviado.":
+          res.status(401).send(error.message);
+          break;
+        case "Preencha todos os campos.":
+          res.status(422).send(error.message);
+          break;
+        case "Carta inexistente.":
+          res.status(404).send(error.message);
+          break;
+        case "Lista inexistente.":
+          res.status(404).send(error.message);
+          break;
+        case "Esta carta não pertence a esta lista.":
+          res.status(422).send(error.message);
+          break;
         case "Usuário não autorizado.":
           res.status(403).send(error.message);
           break;

@@ -72,10 +72,9 @@ export class CardListController {
         .status(200)
         .send(`"${cardName}" removido de "${listName}" com sucesso!`);
     } catch (error: any) {
-      console.log(error)
       switch (error.message) {
-        case "Usuário não autorizado.":
-          res.status(403).send(error.message);
+        case "Token não enviado":
+          res.status(401).send(error.message);
           break;
         case "Preencha todos os campos.":
           res.status(422).send(error.message);
@@ -86,8 +85,11 @@ export class CardListController {
         case "Lista inexistente.":
           res.status(404).send(error.message);
           break;
-        case "Este card não pertence a esta lista.":
+        case "Esta carta não pertence a esta lista.":
           res.status(422).send(error.message);
+          break;
+        case "Usuário não autorizado.":
+          res.status(403).send(error.message);
           break;
         case "Erro no banco de dados":
           res.status(500).send(error.message);

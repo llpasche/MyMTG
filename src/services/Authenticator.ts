@@ -10,7 +10,11 @@ export class Authenticator {
   };
 
   public getTokenData = (token: string): authenticationData => {
-    const data = jwt.verify(token, String(process.env.JWT_KEY));
-    return data as authenticationData;
+    try {
+      const data = jwt.verify(token, String(process.env.JWT_KEY));
+      return data as authenticationData;
+    } catch (error) {
+      throw new Error("Usuário não autorizado.");
+    }
   };
 }

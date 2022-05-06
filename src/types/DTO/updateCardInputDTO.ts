@@ -1,4 +1,5 @@
 export type updateCardQuantityInputDTO = {
     cardId: string,
-    quantity: number
+    quantity: number,
+    listId: string
 }

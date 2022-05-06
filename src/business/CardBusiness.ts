@@ -1,4 +1,6 @@
 import { CardDatabase } from "../data/CardDatabase";
+import { CardListDatabase } from "../data/CardListDatabase";
+import { ListDatabase } from "../data/ListDatabase";
 import { Card } from "../model/Card";
 import { Authenticator } from "../services/Authenticator";
 import { IdGenerator } from "../services/IdGenerator";
@@ -10,6 +12,8 @@ import { updateCardPriceInputDTO } from "../types/DTO/updateCardPriceInputDTO";
 export class CardBusiness {
   constructor(
     private cardDatabase: CardDatabase,
+    private listDatabase: ListDatabase,
+    private cardListDatabase: CardListDatabase,
     private idGenerator: IdGenerator,
     private authenticator: Authenticator
   ) {}
@@ -36,7 +40,7 @@ export class CardBusiness {
     //Validação de carta única
     const card = await this.cardDatabase.uniqueCardVerifier(newCard);
     if (card) {
-      throw new Error("Este card já foi cadastrado.");
+      throw new Error("Esta carta já foi cadastrada.");
     }
 
     await this.cardDatabase.createCard(newCard);
@@ -62,13 +66,48 @@ export class CardBusiness {
     userToken: string
   ): Promise<void> => {
     if (!userToken) {
-      throw new Error("Usuário não autorizado.");
+      throw new Error("Token não enviado.");
     }
+    if (!input.cardId || !input.listId || !input.quantity) {
+      throw new Error("Preencha todos os campos.");
+    }
+
+    const foundCreator = await this.cardListDatabase.getCreatorByListId(
+      input.listId
+    );
     const userData: authenticationData =
       this.authenticator.getTokenData(userToken);
+
+    //Verificação de existência da carta
+    const foundCard = await this.cardDatabase.getCardById(input.cardId);
+    if (!foundCard) {
+      throw new Error("Carta inexistente.");
+    }
+
+    //Verificação de existência da lista
+    const foundList = await this.listDatabase.getListById(input.listId);
+    if (!foundList) {
+      throw new Error("Lista inexistente.");
+    }
+
+    //Validação de pertencimento da carta à lista
+    const isCardFromList = await this.cardListDatabase.hasCardVerifier(
+      input.cardId,
+      input.listId
+    );
+    if (!isCardFromList) {
+      throw new Error("Esta carta não pertence a esta lista.");
+    }
+
+    //Autorização do usuário
+    if (foundCreator.creator_id !== userData.id) {
+      throw new Error("Usuário não autorizado.");
+    }
+
     await this.cardDatabase.updateCardQuantity(
       input.cardId,
       input.quantity,
+      input.listId,
       userData
     );
   };
@@ -78,19 +117,52 @@ export class CardBusiness {
     userToken: string
   ): Promise<void> => {
     if (!userToken) {
-      throw new Error("Usuário não autorizado.");
+      throw new Error("Token não enviado.");
     }
-    if(!input.price.includes("R$")){
-      throw new Error("Insira o valor na formatação correta (R$<valor aqui>).");      
+    if (!input.cardId || !input.listId || !input.price) {
+      throw new Error("Preencha todos os campos.");
     }
+    if (!input.price.includes("R$")) {
+      throw new Error("Insira o valor na formatação correta (R$<valor aqui>).");
+    }
+
+    const foundCreator = await this.cardListDatabase.getCreatorByListId(
+      input.listId
+    );
     const userData: authenticationData =
       this.authenticator.getTokenData(userToken);
+
+    //Verificação de existência da carta
+    const foundCard = await this.cardDatabase.getCardById(input.cardId);
+    if (!foundCard) {
+      throw new Error("Carta inexistente.");
+    }
+
+    //Verificação de existência da lista
+    const foundList = await this.listDatabase.getListById(input.listId);
+    if (!foundList) {
+      throw new Error("Lista inexistente.");
+    }
+
+    //Validação de pertencimento da carta à lista
+    const isCardFromList = await this.cardListDatabase.hasCardVerifier(
+      input.cardId,
+      input.listId
+    );
+    if (!isCardFromList) {
+      throw new Error("Esta carta não pertence a esta lista.");
+    }
+
+    //Autorização do usuário
+    if (foundCreator.creator_id !== userData.id) {
+      throw new Error("Usuário não autorizado.");
+    }
+
     await this.cardDatabase.updateCardPrice(
       input.cardId,
       input.price,
+      input.listId,
       userData
     );
   };
-
-
 }

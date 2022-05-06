@@ -1,4 +1,5 @@
 export type updateCardPriceInputDTO ={ 
     cardId: string,
-    price: string
+    price: string,
+    listId: string
 }

@@ -46,11 +46,13 @@ export class CardDatabase extends BaseDatabase {
   public updateCardQuantity = async (
     card: string,
     quantity: number,
+    list: string,
     userData: authenticationData
   ) => {
     try {
       await this.connection("Lists")
         .where("creator_id", userData.id)
+        .andWhere("Card_and_List.list_id", list)
         .join("Card_and_List", "Card_and_List.list_id", "Lists.list_id")
         .join(this.TABLE_NAME, "Cards.card_id", "Card_and_List.card_id")
         .update("Cards.card_quantity", quantity)
@@ -67,11 +69,13 @@ export class CardDatabase extends BaseDatabase {
   public updateCardPrice = async (
     card: string,
     price: string,
+    list: string,
     userData: authenticationData
   ) => {
     try {
       await this.connection("Lists")
         .where("creator_id", userData.id)
+        .andWhere("Card_and_List.list_id", list)
         .join("Card_and_List", "Card_and_List.list_id", "Lists.list_id")
         .join(this.TABLE_NAME, "Cards.card_id", "Card_and_List.card_id")
         .update("Cards.card_price", price)
@@ -87,9 +91,9 @@ export class CardDatabase extends BaseDatabase {
 
   public getCardById = async (id: string): Promise<Card> => {
     try {
-      const list = await this.connection(this.TABLE_NAME).where("card_id", id);
+      const [list] = await this.connection(this.TABLE_NAME).where("card_id", id);
 
-      return list[0];
+      return list;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);

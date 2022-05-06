@@ -33,7 +33,7 @@ export class UserBusiness {
 
     await this.userDataBase.signup(user);
 
-    const token: string = this.authenticator.generate({ id, hashedPassword });
+    const token: string = this.authenticator.generate({id});
 
     return token;
   };
@@ -62,7 +62,6 @@ export class UserBusiness {
 
     const token: string = this.authenticator.generate({
       id: foundUser.user_id,
-      hashedPassword: foundUser.user_password,
     });
 
     return token;
