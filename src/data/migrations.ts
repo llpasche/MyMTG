@@ -55,4 +55,3 @@ export class Migrations extends BaseDatabase {
 const myMigrations = new Migrations();
 
 myMigrations.createTables().finally(myMigrations.closeConnection);
-//new Migrations().createTables().finally();
