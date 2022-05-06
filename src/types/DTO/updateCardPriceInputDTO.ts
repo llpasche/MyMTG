@@ -1,5 +1,5 @@
-export type updateCardPriceInputDTO ={ 
-    cardId: string,
-    price: string,
-    listId: string
-}
+export type updateCardPriceInputDTO = {
+  cardId: string;
+  price: string;
+  listId: string;
+};

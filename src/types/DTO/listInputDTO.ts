@@ -1,4 +1,4 @@
 export type listInputDTO = {
-    name: string
-    creatorId: string
-}
+  name: string;
+  creatorId: string;
+};

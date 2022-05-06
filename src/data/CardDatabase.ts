@@ -27,13 +27,13 @@ export class CardDatabase extends BaseDatabase {
 
   public uniqueCardVerifier = async (card: Card) => {
     try {
-      const result = await this.connection(this.TABLE_NAME)
+      const [result] = await this.connection(this.TABLE_NAME)
         .where("card_name", card.getName())
         .andWhere("card_edition", card.getEdition())
         .andWhere("card_language", card.getLanguage())
         .andWhere("card_is_foil", card.getIsFoil())
         .andWhere("card_price", card.getPrice());
-      return result[0];
+      return result;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -91,7 +91,10 @@ export class CardDatabase extends BaseDatabase {
 
   public getCardById = async (id: string): Promise<Card> => {
     try {
-      const [list] = await this.connection(this.TABLE_NAME).where("card_id", id);
+      const [list] = await this.connection(this.TABLE_NAME).where(
+        "card_id",
+        id
+      );
 
       return list;
     } catch (error) {

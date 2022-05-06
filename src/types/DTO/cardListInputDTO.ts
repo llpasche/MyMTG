@@ -1,4 +1,4 @@
 export type cardListInputDTO = {
-    cardId: string,
-    listId: string
-}
+  cardId: string;
+  listId: string;
+};

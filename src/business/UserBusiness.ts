@@ -33,7 +33,7 @@ export class UserBusiness {
 
     await this.userDataBase.signup(user);
 
-    const token: string = this.authenticator.generate({id});
+    const token: string = this.authenticator.generate({ id });
 
     return token;
   };

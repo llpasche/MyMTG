@@ -12,12 +12,12 @@ export class ListBusiness {
   public createList = async (input: listInputDTO): Promise<void> => {
     const { name, creatorId } = input;
     const id = this.idGenerator.generateId();
-    
+
     //Validação de preenchimento de dados e autorização
-    if (!name ) {
+    if (!name) {
       throw new Error("Preencha todos os campos.");
     }
-    if (!creatorId ) {
+    if (!creatorId) {
       throw new Error("Usuário não autorizado.");
     }
 
@@ -35,12 +35,12 @@ export class ListBusiness {
   public retrieveListName = async (id: string) => {
     const result = await this.listDatabase.getListName(id);
 
-    return result
+    return result;
   };
 
   public getLists = async () => {
     const result = await this.listDatabase.getLists();
 
-    return result
-  }
+    return result;
+  };
 }

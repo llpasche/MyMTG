@@ -22,12 +22,12 @@ export class ListDatabase extends BaseDatabase {
 
   public getListByName = async (name: string): Promise<List> => {
     try {
-      const list = await this.connection(this.TABLE_NAME).where(
+      const [list] = await this.connection(this.TABLE_NAME).where(
         "list_name",
         name
       );
 
-      return list[0];
+      return list;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -39,9 +39,12 @@ export class ListDatabase extends BaseDatabase {
 
   public getListById = async (id: string): Promise<List> => {
     try {
-      const list = await this.connection(this.TABLE_NAME).where("list_id", id);
+      const [list] = await this.connection(this.TABLE_NAME).where(
+        "list_id",
+        id
+      );
 
-      return list[0];
+      return list;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);

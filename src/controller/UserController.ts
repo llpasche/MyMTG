@@ -14,7 +14,9 @@ export class UserController {
         password,
       };
       const token: string = await this.userBusiness.signup(input);
-      res.status(201).send({ message: "Usuário cadastrado com sucesso!", token: token });
+      res
+        .status(201)
+        .send({ message: "Usuário cadastrado com sucesso!", token: token });
     } catch (error) {
       if (error instanceof Error) {
         res.status(400).send(error.message);

@@ -1,5 +1,5 @@
 export type updateCardQuantityInputDTO = {
-    cardId: string,
-    quantity: number,
-    listId: string
-}
+  cardId: string;
+  quantity: number;
+  listId: string;
+};

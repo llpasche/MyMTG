@@ -23,12 +23,12 @@ export class UserDatabase extends BaseDatabase {
 
   public getUserByEmail = async (email: string) => {
     try {
-      const result = await this.connection(this.TABLE_NAME).where(
+      const [result] = await this.connection(this.TABLE_NAME).where(
         "user_email",
         email
       );
 
-      return result[0];
+      return result;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
@@ -40,11 +40,11 @@ export class UserDatabase extends BaseDatabase {
 
   public getUserById = async (id: string) => {
     try {
-      const result = await this.connection(this.TABLE_NAME).where(
+      const [result] = await this.connection(this.TABLE_NAME).where(
         "user_id",
         id
       );
-      return result[0];
+      return result;
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
