@@ -24,13 +24,13 @@ Para instalar a aplicação é necessário ter instalado na sua máquina:
 
 Para rodar o projeto execute os comandos abaixo no seu terminal:
 
-Para copiar o projeto/
+Para copiar o projeto\
 `git clone https://github.com/llpasche/MyMTG.git`
 
-Para rodar o projeto entre na sua pasta raíz (MyMTG) e execute:/
+Para rodar o projeto entre na sua pasta raíz (MyMTG) e execute:\
 `npm install`
 
-Para criar uma cópia das tabelas no seu banco de dados, execute:/
+Para criar uma cópia das tabelas no seu banco de dados, execute:\
 `npm run migrations`
 
 ## 🗄️ Modelagem das tabelas
