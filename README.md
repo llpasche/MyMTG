@@ -30,7 +30,7 @@ Para copiar o projeto
 Para rodar o projeto entre na sua pasta raíz (MyMTG) e execute:
 `npm install`
 
-Para criar uma cópia do banco de dados, execute:
+Para criar uma cópia das tabelas no seu banco de dados, execute:
 `npm run migrations`
 
 
