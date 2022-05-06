@@ -33,6 +33,10 @@ Para rodar o projeto entre na sua pasta raíz (MyMTG) e execute:
 Para criar uma cópia das tabelas no seu banco de dados, execute:
 `npm run migrations`
 
+## 🗄️ Modelagem do banco das tabelas
+![tables-model](https://user-images.githubusercontent.com/90166189/167227438-8c24df18-44c0-460a-bddc-a88e388d2434.jpg)
+
+
 ## 📄 Documentação da API
 https://documenter.getpostman.com/view/19294478/UyxbsATz
 
