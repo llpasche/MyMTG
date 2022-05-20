@@ -1,5 +1,3 @@
-Projeto do teste técnico de back-end da Zappts.
-
 # 🧙 MyMTG
 
 MyMTG é uma plataforma com o intuito de ser o braço direito do card player. Nela, sem cadastro, é possível ver as listas cadastradas, bem como suas cartas. Realizando o cadastro, o usuário também pode criar e gerenciar suas próprias listas e cartas. 
